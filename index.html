@@ -6,7 +6,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <title>Mafia Host Notebook</title>
+  <title>RECKONING</title>
   <style>
     * {
       box-sizing: border-box;
@@ -116,6 +116,20 @@
 
     
 
+    .icon {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
     .status {
       margin-top: 12px;
       font-size: 14px;
@@ -124,10 +138,9 @@
   </style>
 </head>
 <body>
-  <h1>🕵 Mafia Notebook</h1>
 
   <button id="resetGame" style="width:358px;height:56px;margin-bottom:18px;border:none;border-radius:14px;background:url('button-big.png') center/cover no-repeat;color:white;font-size:16px;font-weight:bold;cursor:pointer;">
-    🔄 Очистить игру
+    Очистить игру
   </button>
 
   <div class="roles" id="roles"></div>
@@ -141,9 +154,7 @@
       'Телохранитель',
       'Любовница',
       'Ведьма',
-      'Маньяк',
-      'Мирный житель',
-      'Мирный житель'
+      'Маньяк'
     ];
 
     const container = document.getElementById('roles');
@@ -158,10 +169,10 @@
         <input type="text" placeholder="Имя игрока" />
 
         <div class="buttons">
-          <button class="kill-btn">💀 Жив</button>
-          <button class="doctor-btn">💉 Не лечил</button>
-          <button class="lover-btn">💋 Не забрала</button>
-          <button class="witch-btn">🧪 Не выбрано</button>
+          <button class="kill-btn"><img src="skull.png" class="icon"> <span>Жив</span></button>
+          <button class="doctor-btn"><img src="heal.png" class="icon"> <span>Не лечил</span></button>
+          <button class="lover-btn"><img src="kiss.png" class="icon"> <span>Не забрала</span></button>
+          <button class="witch-btn"><img src="witch.png" class="icon"> <span>Не выбрано</span></button>
         </div>
 
         <div class="status">Статус: активен</div>
@@ -177,12 +188,12 @@
 
         if (dead) {
           card.classList.add('dead');
-          killBtn.textContent = '☠ Убит';
+          killBtn.querySelector('span').textContent = 'Убит';
           
           status.textContent = 'Статус: выбыл из игры';
         } else {
           card.classList.remove('dead');
-          killBtn.textContent = '💀 Жив';
+          killBtn.querySelector('span').textContent = 'Жив';
           
           status.textContent = 'Статус: активен';
         }
@@ -196,10 +207,10 @@
         taken = !taken;
 
         if (taken) {
-          loverBtn.textContent = '💋 Забрала';
+          loverBtn.querySelector('span').textContent = 'Забрала';
           
         } else {
-          loverBtn.textContent = '💋 Не забрала';
+          loverBtn.querySelector('span').textContent = 'Не забрала';
           
         }
       });
@@ -212,10 +223,10 @@
         healed = !healed;
 
         if (healed) {
-          doctorBtn.textContent = '💉 Вылечен';
+          doctorBtn.querySelector('span').textContent = 'Вылечен';
           
         } else {
-          doctorBtn.textContent = '💉 Не лечил';
+          doctorBtn.querySelector('span').textContent = 'Не лечил';
           
         }
       });
@@ -232,17 +243,17 @@
         }
 
         if (witchState === 0) {
-          witchBtn.textContent = '🧪 Не выбрано';
+          witchBtn.querySelector('span').textContent = 'Не выбрано';
           
         }
 
         if (witchState === 1) {
-          witchBtn.textContent = '🧪 Вылечила';
+          witchBtn.querySelector('span').textContent = 'Вылечила';
           witchBtn.className = 'witch-btn';
         }
 
         if (witchState === 2) {
-          witchBtn.textContent = '☠ Убила';
+          witchBtn.querySelector('span').textContent = 'Убила';
           
         }
       });
