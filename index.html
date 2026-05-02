@@ -36,7 +36,10 @@
     .card {
       width: 358px;
       min-height: 220px;
-      background: url('card-bg.png') center/cover no-repeat;
+      background-image: url('card-bg.png');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
       border-radius: 18px;
       padding: 16px;
       border: 2px solid #2d2d2d;
@@ -83,7 +86,7 @@
       cursor: pointer;
       color: white;
       transition: 0.2s;
-      background-size: cover;
+      background-size: 100% 100%;
       background-position: center;
     }
 
@@ -91,33 +94,25 @@
       background: url('button-small.png') center/cover no-repeat;
     }
 
-    .kill-btn.active {
-      background: #ff2c2c;
-    }
+    
 
     .doctor-btn {
       background: url('button-small.png') center/cover no-repeat;
     }
 
-    .doctor-btn.active {
-      background: #1e90ff;
-    }
+    
 
     .lover-btn {
       background: url('button-small.png') center/cover no-repeat;
     }
 
-    .lover-btn.active {
-      background: #c04dff;
-    }
+    
 
     .witch-btn {
       background: url('button-small.png') center/cover no-repeat;
     }
 
-    .witch-btn.kill {
-      background: #8b0000;
-    }
+    
 
     .status {
       margin-top: 12px;
@@ -127,9 +122,10 @@
   </style>
 </head>
 <body>
+  <h1>🕵 Mafia Notebook</h1>
 
   <button id="resetGame" style="width:358px;height:56px;margin-bottom:18px;border:none;border-radius:14px;background:url('button-big.png') center/cover no-repeat;color:white;font-size:16px;font-weight:bold;cursor:pointer;">
-    Очистить игру
+    🔄 Очистить игру
   </button>
 
   <div class="roles" id="roles"></div>
@@ -144,6 +140,8 @@
       'Любовница',
       'Ведьма',
       'Маньяк',
+      'Мирный житель',
+      'Мирный житель'
     ];
 
     const container = document.getElementById('roles');
@@ -178,12 +176,12 @@
         if (dead) {
           card.classList.add('dead');
           killBtn.textContent = '☠ Убит';
-          killBtn.classList.add('active');
+          
           status.textContent = 'Статус: выбыл из игры';
         } else {
           card.classList.remove('dead');
           killBtn.textContent = '💀 Жив';
-          killBtn.classList.remove('active');
+          
           status.textContent = 'Статус: активен';
         }
       });
@@ -197,10 +195,10 @@
 
         if (taken) {
           loverBtn.textContent = '💋 Забрала';
-          loverBtn.classList.add('active');
+          
         } else {
           loverBtn.textContent = '💋 Не забрала';
-          loverBtn.classList.remove('active');
+          
         }
       });
 
@@ -213,10 +211,10 @@
 
         if (healed) {
           doctorBtn.textContent = '💉 Вылечен';
-          doctorBtn.classList.add('active');
+          
         } else {
           doctorBtn.textContent = '💉 Не лечил';
-          doctorBtn.classList.remove('active');
+          
         }
       });
 
@@ -233,7 +231,7 @@
 
         if (witchState === 0) {
           witchBtn.textContent = '🧪 Не выбрано';
-          witchBtn.className = 'witch-btn';
+          
         }
 
         if (witchState === 1) {
@@ -243,7 +241,7 @@
 
         if (witchState === 2) {
           witchBtn.textContent = '☠ Убила';
-          witchBtn.className = 'witch-btn kill';
+          
         }
       });
 
