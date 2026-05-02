@@ -6,13 +6,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="favicon.png">
   <title>RECKONING</title>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
     }
 
     body {
@@ -130,6 +132,67 @@
       gap: 8px;
     }
 
+    .tutorial-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 20px;
+    }
+
+    .tutorial-box {
+      width: 100%;
+      max-width: 360px;
+      background: #1b1b1b;
+      border-radius: 28px;
+      padding: 24px;
+      color: white;
+    }
+
+    .tutorial-box h2 {
+      font-size: 28px;
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+
+    .tutorial-icon {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .tutorial-box p {
+      opacity: 0.8;
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+
+    .tutorial-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    #closeTutorial {
+      width: 100%;
+      height: 54px;
+      border: none;
+      border-radius: 999px;
+      background: white;
+      color: black;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
     .status {
       margin-top: 12px;
       font-size: 14px;
@@ -138,6 +201,39 @@
   </style>
 </head>
 <body>
+  <div id="tutorialModal" class="tutorial-overlay">
+    <div class="tutorial-box">
+      <h2>Добро пожаловать!</h2>
+      <p>
+        Это блокнот ведущего для игры Mafia.
+      </p>
+
+      <div class="tutorial-list">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <img src="skull.png" class="tutorial-icon">
+          <div><b>Жив / Убит</b><br>Отмечает выбыл ли игрок.</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <img src="heal.png" class="tutorial-icon">
+          <div><b>Доктор</b><br>Показывает кого вылечил доктор.</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <img src="kiss.png" class="tutorial-icon">
+          <div><b>Любовница</b><br>Показывает кого забрала любовница.</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <img src="witch.png" class="tutorial-icon">
+          <div><b>Ведьма</b><br>Нажимайте кнопку чтобы менять действие:
+          <br>• Не выбрано
+          <br>• Вылечила
+          <br>• Убила
+          </div>
+        </div>
+      </div>
+
+      <button id="closeTutorial">Понятно</button>
+    </div>
+  </div>
 
   <button id="resetGame" style="width:358px;height:56px;margin-bottom:18px;border:none;border-radius:14px;background:url('button-big.png') center/cover no-repeat;color:white;font-size:16px;font-weight:bold;cursor:pointer;">
     Очистить игру
@@ -147,14 +243,16 @@
 
   <script>
     const roles = [
-      'Мафия',
-      'Мафия',
       'Детектив',
       'Доктор',
       'Телохранитель',
       'Любовница',
       'Ведьма',
-      'Маньяк'
+      'Мафия',
+      'Мафия',
+      'Мафия',
+      'Мафия',
+      'Маньяк',
     ];
 
     const container = document.getElementById('roles');
@@ -263,6 +361,10 @@
 
     document.getElementById('resetGame').addEventListener('click', () => {
       location.reload();
+    });
+
+    document.getElementById('closeTutorial').addEventListener('click', () => {
+      document.getElementById('tutorialModal').style.display = 'none';
     });
   </script>
 </body>
