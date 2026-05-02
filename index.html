@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mafia Host Notebook</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #111;
+      color: white;
+      padding: 16px;
+      max-width: 390px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+
+    .roles {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding-bottom: 40px;
+    }
+
+    .card {
+      width: 358px;
+      min-height: 220px;
+      background: url('card-bg.png') center/cover no-repeat;
+      border-radius: 18px;
+      padding: 16px;
+      border: 2px solid #2d2d2d;
+      transition: 0.2s;
+      position: relative;
+    }
+
+    .card.dead {
+      opacity: 0.45;
+      border-color: #8b0000;
+    }
+
+    .role-name {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    input {
+      width: 300px;
+      height: 42px;
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      background: rgba(0,0,0,0.45);
+      color: white;
+      margin-bottom: 12px;
+      font-size: 16px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    button {
+      width: 150px;
+      height: 42px;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 14px;
+      cursor: pointer;
+      color: white;
+      transition: 0.2s;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .kill-btn {
+      background: url('button-small.png') center/cover no-repeat;
+    }
+
+    .kill-btn.active {
+      background: #ff2c2c;
+    }
+
+    .doctor-btn {
+      background: url('button-small.png') center/cover no-repeat;
+    }
+
+    .doctor-btn.active {
+      background: #1e90ff;
+    }
+
+    .lover-btn {
+      background: url('button-small.png') center/cover no-repeat;
+    }
+
+    .lover-btn.active {
+      background: #c04dff;
+    }
+
+    .witch-btn {
+      background: url('button-small.png') center/cover no-repeat;
+    }
+
+    .witch-btn.kill {
+      background: #8b0000;
+    }
+
+    .status {
+      margin-top: 12px;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <h1>🕵 Mafia Notebook</h1>
+
+  <button id="resetGame" style="width:358px;height:56px;margin-bottom:18px;border:none;border-radius:14px;background:url('button-big.png') center/cover no-repeat;color:white;font-size:16px;font-weight:bold;cursor:pointer;">
+    🔄 Очистить игру
+  </button>
+
+  <div class="roles" id="roles"></div>
+
+  <script>
+    const roles = [
+      'Мафия',
+      'Мафия',
+      'Детектив',
+      'Доктор',
+      'Телохранитель',
+      'Любовница',
+      'Ведьма',
+      'Маньяк',
+      'Мирный житель',
+      'Мирный житель'
+    ];
+
+    const container = document.getElementById('roles');
+
+    roles.forEach((role, index) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      card.innerHTML = `
+        <div class="role-name">${role}</div>
+
+        <input type="text" placeholder="Имя игрока" />
+
+        <div class="buttons">
+          <button class="kill-btn">💀 Жив</button>
+          <button class="doctor-btn">💉 Не лечил</button>
+          <button class="lover-btn">💋 Не забрала</button>
+          <button class="witch-btn">🧪 Не выбрано</button>
+        </div>
+
+        <div class="status">Статус: активен</div>
+      `;
+
+      const killBtn = card.querySelector('.kill-btn');
+      const status = card.querySelector('.status');
+
+      let dead = false;
+
+      killBtn.addEventListener('click', () => {
+        dead = !dead;
+
+        if (dead) {
+          card.classList.add('dead');
+          killBtn.textContent = '☠ Убит';
+          killBtn.classList.add('active');
+          status.textContent = 'Статус: выбыл из игры';
+        } else {
+          card.classList.remove('dead');
+          killBtn.textContent = '💀 Жив';
+          killBtn.classList.remove('active');
+          status.textContent = 'Статус: активен';
+        }
+      });
+
+      const loverBtn = card.querySelector('.lover-btn');
+
+      let taken = false;
+
+      loverBtn.addEventListener('click', () => {
+        taken = !taken;
+
+        if (taken) {
+          loverBtn.textContent = '💋 Забрала';
+          loverBtn.classList.add('active');
+        } else {
+          loverBtn.textContent = '💋 Не забрала';
+          loverBtn.classList.remove('active');
+        }
+      });
+
+      const doctorBtn = card.querySelector('.doctor-btn');
+
+      let healed = false;
+
+      doctorBtn.addEventListener('click', () => {
+        healed = !healed;
+
+        if (healed) {
+          doctorBtn.textContent = '💉 Вылечен';
+          doctorBtn.classList.add('active');
+        } else {
+          doctorBtn.textContent = '💉 Не лечил';
+          doctorBtn.classList.remove('active');
+        }
+      });
+
+      const witchBtn = card.querySelector('.witch-btn');
+
+      let witchState = 0;
+
+      witchBtn.addEventListener('click', () => {
+        witchState++;
+
+        if (witchState > 2) {
+          witchState = 0;
+        }
+
+        if (witchState === 0) {
+          witchBtn.textContent = '🧪 Не выбрано';
+          witchBtn.className = 'witch-btn';
+        }
+
+        if (witchState === 1) {
+          witchBtn.textContent = '🧪 Вылечила';
+          witchBtn.className = 'witch-btn';
+        }
+
+        if (witchState === 2) {
+          witchBtn.textContent = '☠ Убила';
+          witchBtn.className = 'witch-btn kill';
+        }
+      });
+
+      container.appendChild(card);
+    });
+
+    document.getElementById('resetGame').addEventListener('click', () => {
+      location.reload();
+    });
+  </script>
+</body>
+</html>
